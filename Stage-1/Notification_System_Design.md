@@ -70,3 +70,64 @@ I tried to fetch real data from: `http://4.224.186.213/evaluation-service/notifi
 - ✓ Very efficient!
 
 ### 6. Sample Output
+================================================================================
+TOP 10 UNREAD NOTIFICATIONS
+Priority: PLACEMENT (3) > RESULT (2) > EVENT (1)
+================================================================================
+
+[PLACEMENT] 2026-06-05 09:56:05 | URGENT: Google hiring drive tomorrow
+
+[PLACEMENT] 2026-04-22 17:51:18 | CSX Corporation hiring
+
+[PLACEMENT] 2026-04-22 17:49:42 | Advanced Micro Devices Inc. hiring
+
+[RESULT] 2026-06-05 09:54:05 | Final exam results published
+
+[RESULT] 2026-04-22 17:51:38 | mid-sem
+
+[RESULT] 2026-04-22 17:50:54 | mid-sem
+
+[RESULT] 2026-04-22 17:50:42 | project-review
+
+[RESULT] 2026-04-22 17:50:38 | external
+
+[RESULT] 2026-04-22 17:50:18 | project-review
+
+[RESULT] 2026-04-22 17:49:54 | project-review
+================================================================================
+
+### 7. Performance Summary
+
+| Operation | Time Complexity |
+|-----------|----------------|
+| Add new notification | O(log N) ≈ very fast |
+| Get top 10 | O(N log N) |
+| Mark as read | O(N) |
+
+**Real result:** 100 notifications added in 8.837 milliseconds
+
+### 8. Challenges I Faced
+
+| Challenge | How I Solved It |
+|-----------|-----------------|
+| API authentication error | Used mock data from screenshots |
+| Maintaining top 10 efficiently | Used Min-Heap instead of sorting all |
+| Handling real-time notifications | Heap insertion in O(log N) time |
+| Marking read without breaking order | Rebuilt heap after marking read |
+
+### 9. Conclusion
+
+My implementation successfully:
+-  Shows Placement notifications first
+-  Shows Result notifications second  
+-  Shows Event notifications last
+-  Shows newer notifications first within same type
+-  Maintains top 10 efficiently using heap
+-  Handles new notifications in real-time
+-  Supports marking notifications as read
+
+---
+
+**Author:** Manideepika Gali  
+**Stage:** 1 - Priority Inbox System  
+**Date:** June 2026
