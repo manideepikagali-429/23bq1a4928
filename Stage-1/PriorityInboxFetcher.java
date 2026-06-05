@@ -2,14 +2,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
-
 class Notification implements Comparable<Notification> {
     String id;
     String type;
     String message;
     LocalDateTime timestamp;
     boolean isRead;
-
     public Notification(String id, String type, String message, String timestampStr) {
         this.id = id;
         this.type = type;
@@ -21,13 +19,12 @@ class Notification implements Comparable<Notification> {
 
     public int getPriorityWeight() {
         switch (type.toLowerCase()) {
-            case "placement": return 3;  // Highest priority
+            case "placement": return 3;  
             case "result": return 2;
-            case "event": return 1;      // Lowest priority
+            case "event": return 1;     
             default: return 0;
         }
     }
-
     @Override
     public int compareTo(Notification other) {
         // Higher weight first
@@ -37,7 +34,6 @@ class Notification implements Comparable<Notification> {
         // Then newer timestamp first
         return other.timestamp.compareTo(this.timestamp);
     }
-
     @Override
     public String toString() {
         return String.format("[%s] %s | %s", 
@@ -46,17 +42,13 @@ class Notification implements Comparable<Notification> {
             message);
     }
 }
-
-// Min-Heap wrapper for efficient top-N maintenance
 class PriorityInbox {
     private PriorityQueue<Notification> minHeap;
     private List<Notification> allNotifications;
     private int topN;
-    
     public PriorityInbox(int topN) {
         this.topN = topN;
         this.allNotifications = new ArrayList<>();
-        // Min-heap based on lowest priority (weight + timestamp)
         this.minHeap = new PriorityQueue<>((a, b) -> {
             if (a.getPriorityWeight() != b.getPriorityWeight()) {
                 return Integer.compare(a.getPriorityWeight(), b.getPriorityWeight());
@@ -64,29 +56,21 @@ class PriorityInbox {
             return a.timestamp.compareTo(b.timestamp);
         });
     }
-    
-    // Add notification and maintain top N efficiently (O(log N))
     public void addNotification(Notification notification) {
         allNotifications.add(notification);
-        
         if (!notification.isRead) {
             minHeap.offer(notification);
-            
             // Keep only top N in heap
             if (minHeap.size() > topN) {
                 minHeap.poll();
             }
         }
     }
-    
-    // Add multiple notifications
     public void addAllNotifications(List<Notification> notifications) {
         for (Notification n : notifications) {
             addNotification(n);
         }
     }
-    
-    // Get top N notifications sorted by priority
     public List<Notification> getTopNotifications() {
         List<Notification> topList = new ArrayList<>(minHeap);
         topList.sort((a, b) -> {
@@ -97,8 +81,6 @@ class PriorityInbox {
         });
         return topList;
     }
-    
-    // Mark notification as read and update heap
     public void markAsRead(String notificationId) {
         for (Notification n : allNotifications) {
             if (n.id.equals(notificationId) && !n.isRead) {
@@ -108,8 +90,6 @@ class PriorityInbox {
             }
         }
     }
-    
-    // Rebuild heap efficiently when notifications are marked as read
     private void rebuildHeap() {
         minHeap.clear();
         for (Notification n : allNotifications) {
@@ -121,7 +101,6 @@ class PriorityInbox {
             }
         }
     }
-    
     public void displayTopNotifications() {
         List<Notification> top = getTopNotifications();
         System.out.println("\n" + "=".repeat(80));
@@ -149,7 +128,6 @@ class PriorityInbox {
             .filter(n -> n.type.equalsIgnoreCase("Event")).count();
         long unreadCount = allNotifications.stream()
             .filter(n -> !n.isRead).count();
-        
         System.out.println("\n📊 SYSTEM STATISTICS");
         System.out.println("-".repeat(40));
         System.out.println("Total Notifications: " + allNotifications.size());
